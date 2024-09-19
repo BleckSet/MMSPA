@@ -55,28 +55,37 @@ centerMode:false,
 
 
 
-$(document).ready(function(){
-  var $slider = $('.popular .popular_inner');
+  
 
-  $slider.slick({
-    responsive: [
-      {
-        breakpoint: 769,
-        settings: 'unslick' // Отключить слайдер на ширине экрана <= 769px
+
+  $(document).ready(function() {
+    var $slider = $('.popular .popular_inner');
+  
+    // Функция для инициализации или отключения слайдера в зависимости от ширины экрана
+    function initSlider() {
+      if ($(window).width() < 1200) {
+        if (!$slider.hasClass('slick-initialized')) {
+          $slider.slick({
+            slidesToShow: 2,
+            slidesToScroll: 1,
+            arrows: false,
+            variableWidth: false
+          });
+        }
+      } else {
+        if ($slider.hasClass('slick-initialized')) {
+          $slider.slick('unslick'); // Отключаем слайдер
+        }
       }
-    ]
-  });
-
-  // Повторно инициализируем слайдер при изменении размера окна
-  $(window).on('resize', function() {
-    if ($(window).width() > 769 && !$slider.hasClass('slick-initialized')) {
-      $slider.slick({
-        slidesToShow: 2,
-        slidesToScroll: 1,
-        arrows: false,
-        variableWidth: false
-      });
     }
+  
+    // Инициализация при загрузке страницы
+    initSlider();
+  
+    // Инициализация при изменении размера окна
+    $(window).on('resize', function() {
+      initSlider();
+    });
   });
 });
 
